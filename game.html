@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>어느 1년</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ECEFF5;
+  --surface:#F8F9FC;
+  --ink:#1A2236;
+  --muted:#5A6480;
+  --accent:#D9862E;
+  --accent-ink:#1A2236;
+  --mystery:#6E56CF;
+  --line:rgba(26,34,54,.14);
+  --figdim:#C3C9D7;
+  --figprop:#A6AEC2;
+  --stepme:#FBEBD3;
+  --serif:'Gowun Batang','Nanum Myeongjo','AppleMyungjo','Batang',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121827;--surface:#1A2133;--ink:#E6E9F2;--muted:#9AA3BA;--accent:#F0A54C;--accent-ink:#121827;--mystery:#A08CF5;--line:rgba(230,233,242,.14);--figdim:#3A4259;--figprop:#4D5672;--stepme:#2C2739;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121827;--surface:#1A2133;--ink:#E6E9F2;--muted:#9AA3BA;--accent:#F0A54C;--accent-ink:#121827;--mystery:#A08CF5;--line:rgba(230,233,242,.14);--figdim:#3A4259;--figprop:#4D5672;--stepme:#2C2739;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+button{font:inherit}
+#app{position:relative;height:100%;max-width:520px;margin:0 auto;overflow:hidden;background:var(--bg)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{border:0;border-radius:999px;padding:14px 28px;min-height:48px;background:var(--accent);color:var(--accent-ink);font-family:var(--sans);font-size:16px;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn:focus-visible,.choice:focus-visible,.pickc:focus-visible{outline:3px solid var(--mystery);outline-offset:3px}
+
+/* 시작 화면 */
+#title.on{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:28px 28px 36px;text-align:center;overflow-y:auto}
+.ring{width:min(60vw,220px);height:auto;color:var(--ink);overflow:visible}
+.ring .m{fill:none;stroke:var(--muted);stroke-width:1.5;opacity:.6}
+.ring .s{fill:var(--accent);opacity:.16;transition:opacity .6s ease}
+.ring .s.lit{opacity:1}
+.ring text{font-family:var(--sans);font-size:10px;fill:var(--muted)}
+.title{font-family:var(--serif);font-weight:700;font-size:clamp(42px,13vw,56px);line-height:1.1;margin:8px 0 0;letter-spacing:-.01em}
+.subtitle{font-family:var(--serif);font-size:17px;color:var(--muted);margin:0 0 10px}
+.note{font-size:14px;line-height:1.7;color:var(--muted);margin:6px 0 0}
+
+/* 주인공 선택 */
+#who{background:linear-gradient(#19213f,#2b2446);color:#EEF0F7}
+#who.on{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:32px 22px;overflow-y:auto;text-align:center}
+#who h2{font-family:var(--serif);font-size:24px;font-weight:700;margin:0}
+.picks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%;max-width:360px}
+.pickc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:200px;padding:18px 10px;border:1px solid rgba(255,255,255,.16);border-radius:90px 90px 16px 16px;background:rgba(255,255,255,.05);color:inherit;cursor:pointer}
+.pickc span{font-family:var(--serif);font-size:30px;font-weight:700}
+.pickc small{font-size:14px;color:#BBAFF6}
+.pickc:active{background:rgba(160,140,245,.16)}
+#who .hint{margin:0;font-size:14px;line-height:1.7;color:#AEB5CB}
+
+/* 공략 대상 소개 */
+#meet{background:radial-gradient(120% 70% at 50% 18%,#3b2f55 0%,#19213f 72%);color:#EEF0F7}
+#meet.on{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px 24px;overflow-y:auto;text-align:center}
+#meet .mk{margin:0;font-size:14px;color:#BBAFF6}
+.portrait{display:flex;align-items:flex-end;justify-content:center;width:min(54%,210px);aspect-ratio:200/262;overflow:hidden;border:1px solid rgba(255,255,255,.16);border-radius:110px 110px 18px 18px;background:radial-gradient(circle at 50% 42%,rgba(240,165,76,.34),rgba(240,165,76,0) 70%),rgba(255,255,255,.05)}
+.portrait svg{display:block;width:100%;height:auto}
+#meet h2{margin:2px 0 0;font-family:var(--serif);font-size:34px;font-weight:700}
+.profile{margin:0;padding:0;list-style:none;font-size:15px;line-height:1.8;color:#D6DAE7}
+.profile b{margin-right:6px;color:#F0A54C}
+.heart{margin:0 0 6px;font-size:15px;color:#F0A54C}
+
+/* 이야기 화면 */
+#play{background:#10131f;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+#bg{position:absolute;inset:0;transition:opacity .3s ease}
+#bg.fade{opacity:0}
+#bg svg{display:block;width:100%;height:100%}
+#sprite{position:absolute;left:50%;bottom:166px;z-index:1;width:min(56%,240px);transform:translateX(-50%);opacity:0;transition:opacity .35s ease;pointer-events:none}
+#sprite.on{opacity:1}
+#sprite svg{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 18px rgba(0,0,0,.28))}
+#chip{position:absolute;top:12px;left:12px;z-index:3;display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:999px;background:rgba(14,17,30,.55);color:#EEF0F7;font-size:13px;font-weight:700}
+.pips{display:flex;gap:4px}
+.pips i{display:block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.28)}
+.pips i.done{background:#F0A54C}
+#tchip{position:absolute;top:12px;right:12px;z-index:3;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(14,17,30,.55);color:#EEF0F7;font-size:13px}
+#tchip .tl{color:#AEB5CB}
+#tchip b{font-weight:700}
+#tchip .th{font-weight:700;color:#F0A54C}
+#tchip.flip b{color:#F0A54C}
+#quad{position:absolute;left:14px;right:14px;top:58px;bottom:178px;z-index:2;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:22px;background:rgba(10,12,24,.64);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#quad.on{display:flex}
+#quad .qcap{margin:0;font-family:var(--serif);font-size:15px;color:#BBAFF6}
+.qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 18px;width:min(76%,290px)}
+.qcell{display:flex;flex-direction:column;align-items:center;transition:opacity .6s ease}
+.qcell svg{display:block;width:100%;height:auto;max-height:21vh}
+.qcell span{font-family:var(--serif);font-size:14px;letter-spacing:.3em;padding-left:.3em;color:#BBAFF6}
+#quad.lit .qcell{opacity:.3}
+#quad.lit .qcell.me{opacity:1}
+#dialog{position:absolute;left:10px;right:10px;bottom:10px;z-index:4;min-height:146px;padding:26px 20px 30px;border-radius:22px 22px 22px 6px;background:rgba(14,17,32,.88);color:#EEF0F7;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#name{position:absolute;top:-15px;left:16px;display:none;padding:5px 14px 6px;border-radius:12px 12px 12px 3px;background:#F0A54C;color:#1A2236;font-size:14px;font-weight:700}
+#name.on{display:block}
+#name.future{background:#A08CF5;color:#16122B}
+#text{margin:0;min-height:3.5em;font-family:var(--serif);font-size:17.5px;line-height:1.75;white-space:pre-wrap;word-break:keep-all}
+#text.narr{color:#CDD2E2}
+#next{position:absolute;right:20px;bottom:12px;width:10px;height:10px;border-right:2px solid #F0A54C;border-bottom:2px solid #F0A54C;transform:rotate(45deg);opacity:0}
+#next.on{opacity:1;animation:bob 1.1s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(45deg)}50%{transform:translateY(4px) rotate(45deg)}}
+#msg{position:absolute;top:56px;left:12px;right:12px;z-index:5;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:18px;background:rgba(248,249,252,.97);color:#1A2236;box-shadow:0 14px 34px rgba(0,0,0,.3);transform:translateY(-170%);transition:transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+#msg.on{transform:translateY(0)}
+#msg .av{flex:0 0 38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#6E56CF;color:#fff;font-weight:700;font-size:17px}
+#msg .av.known{background:#D9862E}
+#msg .av.sys{background:#5A6480}
+#msg .from{margin:1px 0 3px;font-size:13px;font-weight:700}
+#msg .body{font-size:15px;line-height:1.5;word-break:keep-all}
+#monthcard{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center;background:rgba(10,12,24,.74);color:#EEF0F7;opacity:0;pointer-events:none;transition:opacity .45s ease}
+#monthcard.on{opacity:1;pointer-events:auto}
+#monthcard .big{font-family:var(--serif);font-weight:700;font-size:clamp(50px,17vw,76px);line-height:1}
+#monthcard .sub{font-family:var(--serif);font-size:16px;color:#C9CEDF}
+#monthcard .tap{margin-top:26px;font-size:12px;color:#8E95AC}
+#choices{position:absolute;inset:0;z-index:7;display:none;flex-direction:column;justify-content:flex-end;gap:10px;padding:20px 14px 18px;background:linear-gradient(to bottom,rgba(8,10,22,.1),rgba(8,10,22,.8) 42%);cursor:default}
+#choices.on{display:flex}
+#choices .q{margin:0 4px 4px;font-family:var(--serif);font-size:18px;color:#EEF0F7}
+.choice{padding:14px 16px;border:0;border-radius:6px 18px 18px 18px;background:rgba(244,246,251,.96);color:#1A2236;font-family:var(--serif);font-size:16.5px;line-height:1.55;text-align:left;word-break:keep-all;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.choice:active{background:#F0A54C}
+.rain{animation:rainfall .6s linear infinite}
+@keyframes rainfall{from{transform:translateY(0)}to{transform:translateY(36px)}}
+
+/* 엔딩 */
+#ending{background:radial-gradient(120% 80% at 50% 28%,#3a2f52 0%,#151a2d 72%);color:#EEF0F7}
+#ending.on{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px 26px;text-align:center;overflow-y:auto}
+#ending .art{width:min(52%,220px)}
+#ending .art svg{display:block;width:100%;height:auto}
+#ending .who{margin:4px 0 0;font-size:14px;color:#BBAFF6}
+#ending .e-name{margin:0 0 4px;font-family:var(--serif);font-size:34px;font-weight:700}
+#ending .lines p{margin:0 0 6px;font-family:var(--serif);font-size:17px;line-height:1.8;word-break:keep-all;opacity:0;animation:rise .8s ease forwards}
+#ending .closing{margin:12px 0 6px;font-family:var(--serif);font-size:18px;line-height:1.7;color:#F0A54C;word-break:keep-all;opacity:0;animation:rise .8s ease forwards}
+#ending .btn{opacity:0;animation:rise .6s ease forwards}
+#ending .emsg{display:flex;gap:10px;align-items:flex-start;width:100%;max-width:340px;margin:8px 0 6px;padding:10px 12px;border-radius:16px;background:rgba(248,249,252,.96);color:#1A2236;text-align:left;opacity:0;animation:rise .8s ease forwards}
+#ending .emsg .av{flex:0 0 34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#D9862E;color:#fff;font-weight:700;font-size:15px}
+#ending .emsg .from{margin:0 0 2px;font-size:12px;font-weight:700}
+#ending .emsg .body{font-size:14.5px;line-height:1.5;word-break:keep-all}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* 회상 */
+#result.on{display:block;overflow-y:auto;padding:28px 20px 44px}
+.r-small{margin:0;font-size:14px;color:var(--muted)}
+.r-name{margin:4px 0 0;font-family:var(--serif);font-size:38px;font-weight:700;line-height:1.2}
+.r-mean{margin:6px 0 0;font-size:16px;color:var(--muted);line-height:1.6}
+.r-total{margin:12px 0 0;font-size:15px}
+.lineup{margin:22px 0 8px}
+.lineup svg{display:block;width:100%;height:auto}
+.lu-step{fill:var(--surface)}
+.lu-me .lu-step{fill:var(--stepme)}
+.lu-other .f-body,.lu-other .f-neck{fill:var(--figdim)}
+.lu-me .f-body{fill:var(--ink);stroke:var(--accent);stroke-width:6}
+.lu-me .f-neck{fill:var(--ink)}
+.lu-other .f-prop{fill:var(--figprop)}
+.lu-me .f-prop{fill:var(--accent)}
+.lu-other .f-prop-s{fill:none;stroke:var(--figprop);stroke-width:7;stroke-linecap:round}
+.lu-me .f-prop-s{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round}
+.f-line{fill:none;stroke:var(--bg);stroke-width:3;stroke-linecap:round}
+.f-needle{fill:var(--bg)}
+.lu-name{font-family:var(--sans);font-size:12px;fill:var(--muted)}
+.lu-me .lu-name{fill:var(--ink);font-weight:700}
+.capnote{margin:0 0 16px;font-size:14px;line-height:1.7;color:var(--muted)}
+.save-hint{margin:0;padding:12px 14px;border-radius:14px;background:var(--surface);font-size:14px;line-height:1.6}
+.sec{margin:30px 0 4px;font-family:var(--serif);font-size:21px;font-weight:700}
+.dim{padding:16px 0 6px;border-top:1px solid var(--line)}
+.dim-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.dim-name{font-family:var(--serif);font-size:19px;font-weight:700}
+.dim-ses{margin-left:8px;font-size:13px;color:var(--muted)}
+.dim-score{font-size:17px;font-weight:700}
+.dim-score small{font-size:13px;font-weight:400;color:var(--muted)}
+.dpips{display:flex;gap:5px;margin:8px 0 6px}
+.dpips i{display:block;width:18px;height:8px;border-radius:2px;background:var(--line)}
+.dpips i.on{background:var(--accent)}
+.scene{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:10px 0}
+.mbadge{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--surface);font-family:var(--serif);font-size:14px;font-weight:700}
+.scene-title{margin:2px 0 2px;font-size:14px;font-weight:700;color:var(--muted)}
+.scene-pick{margin:0;font-family:var(--serif);font-size:16px;line-height:1.6;word-break:keep-all}
+.scene-pt{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.scene-pt b{color:var(--ink)}
+.disclaimer{margin:24px 0 18px;font-size:13px;line-height:1.7;color:var(--muted)}
+.r-actions{display:flex;flex-wrap:wrap;gap:10px}
+
+/* 화면 안 대화상자 */
+#modal{position:absolute;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(8,10,20,.6)}
+#modal.on{display:flex}
+.mbox{width:100%;max-width:360px;padding:22px 20px 18px;border-radius:22px;background:var(--surface);color:var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mbox h3{margin:0 0 8px;font-family:var(--serif);font-size:21px}
+.mbox p{margin:0 0 18px;font-size:15px;line-height:1.65;color:var(--muted);white-space:pre-line;word-break:keep-all}
+.mbtns{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  #ending .lines p,#ending .closing,#ending .btn,#ending .emsg{opacity:1}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <section id="title" class="screen" aria-label="시작">
+    <svg class="ring" id="ring" viewBox="0 0 240 240" aria-hidden="true"></svg>
+    <h1 class="title">어느 1년</h1>
+    <p class="subtitle">여덟 번의 선택, 그리고 한 번의 만남</p>
+    <button class="btn" id="btnStart" type="button">시작하기</button>
+    <p class="note">정답은 없어요. 가장 나다운 선택을 골라 주세요.<br>15분쯤 걸려요.</p>
+  </section>
+
+  <section id="who" class="screen" aria-label="주인공 선택">
+    <h2>주인공을 선택하세요</h2>
+    <div class="picks">
+      <button class="pickc" type="button" data-g="m"><span>남자</span><small>주인공</small></button>
+      <button class="pickc" type="button" data-g="f"><span>여자</span><small>주인공</small></button>
+    </div>
+    <p class="hint">고른 주인공에 따라<br>1년을 함께할 사람이 정해집니다.</p>
+  </section>
+
+  <section id="meet" class="screen" aria-label="공략 대상">
+    <p class="mk">이번 1년, 당신의 공략 대상</p>
+    <div class="portrait" id="portrait"></div>
+    <h2>지우</h2>
+    <ul class="profile"><li>대학 동기이자 같은 동네 친구</li><li><b>좋아하는 것</b>솔직한 사람, 클라이밍, 늦잠</li></ul>
+    <p class="heart">호감도 ♥ ???</p>
+    <button class="btn" id="btnBegin" type="button">1년 시작하기</button>
+  </section>
+
+  <section id="play" class="screen" aria-label="이야기">
+    <div id="bg"></div>
+    <div id="sprite"></div>
+    <div id="chip"><span id="chipText">프롤로그</span><span class="pips" id="pips"></span></div>
+    <div id="tchip"><span class="tl">공략 중</span><b id="tname">지우</b><span class="th" id="theart">♥ ???</span></div>
+    <div id="quad"><p class="qcap" id="qcap">가능했던 1년 뒤의 나</p><div class="qgrid" id="qgrid"></div></div>
+    <div id="msg"><div class="av" id="msgAv">?</div><div><div class="from" id="msgFrom"></div><div class="body" id="msgBody"></div></div></div>
+    <div id="dialog"><div id="name"></div><p id="text"></p><span id="next" aria-hidden="true"></span></div>
+    <div id="monthcard"><div class="big" id="mcBig"></div><div class="sub" id="mcSub"></div><div class="tap">화면을 누르면 계속돼요</div></div>
+    <div id="choices" role="group" aria-label="선택지"></div>
+    <p class="sr" id="srText" aria-live="polite"></p>
+  </section>
+
+  <section id="ending" class="screen" aria-label="엔딩"></section>
+  <section id="result" class="screen" aria-label="회상"></section>
+
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="mbox"><h3 id="mTitle"></h3><p id="mBody"></p><div class="mbtns" id="mBtns"></div></div>
+  </div>
+</div>
+<script>
+'use strict';
+
+/* ───────── 데이터 ───────── */
+const DIMS = {
+  lead:   { name: '주도성',   ses: '세션 1' },
+  mind:   { name: '마인드셋', ses: '세션 2' },
+  motive: { name: '내적 동기', ses: '세션 3' },
+  exec:   { name: '실행 전략', ses: '세션 4' }
+};
+const DIM_ORDER = ['lead', 'mind', 'motive', 'exec'];
+
+// 점수 1~4에 대응하는 '1년 뒤의 나'
+const LEVELS = [
+  { key: 'follow', name: '따라가는 나', mean: '흐름과 상황에 맡긴다', prop: 'boat' },
+  { key: 'endure', name: '버티는 나',   mean: '의지와 노력으로 밀어붙인다', prop: 'bag' },
+  { key: 'manage', name: '관리하는 나', mean: '계획하고 기록하며 점검한다', prop: 'note' },
+  { key: 'lead',   name: '이끄는 나',   mean: '목적을 먼저 정하고, 환경과 구조를 설계한다', prop: 'compass' }
+];
+
+// 선택지는 화면에 보이는 순서 그대로. 숫자는 숨은 점수(1~4).
+const SCENES = [
+  { id: 1, month: '1월', title: '운동 결심 2주째', dim: 'exec', opts: [
+    ['요일과 시간을 달력에 적어 두고, 한 날은 표시한다', 3],
+    ['귀찮아도 정신력으로 몸을 일으킨다', 2],
+    ['운동복을 전날 밤 현관에 꺼내 두고, 지우와 같이 가기로 약속한다', 4],
+    ['컨디션 좋은 날 하기로 하고, 오늘은 쉰다', 1]
+  ] },
+  { id: 2, month: '3월', title: '막혀 버린 기타', dim: 'mind', opts: [
+    ['될 때까지 같은 구간을 매일 더 오래 연습한다', 2],
+    ['원래 손재주가 없나 보다 하고, 기타를 슬슬 구석에 세워 둔다', 1],
+    ['잘 치는 사람에게 연주를 보여주고, 피드백을 받아 목표를 다시 잡는다', 4],
+    ['막히는 부분을 잘게 쪼개 보고, 연습 방법을 바꾼다', 3]
+  ] },
+  { id: 3, month: '5월', title: '사흘 연휴', dim: 'lead', opts: [
+    ['이번 연휴를 어떤 시간으로 만들지 먼저 정하고, 거기 맞는 것만 고른다', 4],
+    ['연락 오는 대로, 그때그때 기분 따라 보낸다', 1],
+    ['하고 싶은 일을 적어서 날짜별로 나눈다', 3],
+    ['평소에 못 한 일을 최대한 많이 해치운다', 2]
+  ] },
+  { id: 4, month: '6월', title: '끝나 버린 걷기 챌린지', dim: 'motive', opts: [
+    ['걸으면서 좋았던 순간을 떠올리며, 계속할 이유를 찾는다', 3],
+    ['코스와 시간을 내 식대로 바꾸고, 나만의 목표를 만든다', 4],
+    ['쌓은 습관이 아까워서, 귀찮아도 의무처럼 걷는다', 2],
+    ['보상이 끝났으니, 자연스럽게 안 걷게 된다', 1]
+  ] },
+  { id: 5, month: '7월', title: '장마에 취소된 캠핑', dim: 'lead', opts: [
+    ['어쩔 수 없지. 집에서 하루를 흘려보낸다', 1],
+    ['이번 캠핑에서 원했던 게 뭐였는지 생각하고, 그걸 다른 방식으로 채운다', 4],
+    ['이왕 이렇게 된 거, 밀린 집안일을 몰아서 한다', 2],
+    ['실내에서 할 만한 대안을 찾아 하나 고른다', 3]
+  ] },
+  { id: 6, month: '9월', title: '처음 가 본 클라이밍장', dim: 'mind', opts: [
+    ['오늘은 내 수준의 코스부터 하나씩 깨는 걸로 목표를 바꾼다', 3],
+    ['창피해서 아무렇지 않은 척, 혼자 계속 매달린다', 2],
+    ['다음부터는 적당한 핑계를 대고 빠진다', 1],
+    ['지우에게 요령을 묻고, 못 오른 코스를 다음 숙제로 삼는다', 4]
+  ] },
+  { id: 7, month: '10월', title: '1년 된 독서 모임', dim: 'motive', opts: [
+    ['약속이니까, 참고 끝까지 읽고 나간다', 2],
+    ['이 모임이 처음 재미있었던 순간을 떠올려 본다', 3],
+    ['바쁘다는 핑계로 슬슬 빠지기 시작한다', 1],
+    ['다음 달 발제를 자원해서, 내가 궁금한 주제로 판을 짠다', 4]
+  ] },
+  { id: 8, month: '12월', title: '새벽 1시의 휴대폰', dim: 'exec', opts: [
+    ['내일부터는 진짜 참자고 다짐한다', 2],
+    ['하루의 유일한 낙이니, 그냥 둔다', 1],
+    ['충전기를 침실 밖에 두고, 머리맡에는 읽을 책을 둔다', 4],
+    ['사용 시간을 기록해 보며, 조금씩 줄인다', 3]
+  ] }
+];
+
+const ENDINGS = {
+  follow: [
+    '편안한 1년이었어. 누가 부르면 가고, 비가 오면 쉬고.',
+    '그런데 이상하지. 올해를 떠올리면 기억나는 장면이 별로 없어.',
+    '생각해 보니, 내가 고른 날이 거의 없었더라.'
+  ],
+  endure: [
+    '열심히 살았어. 참고, 버티고, 내일부터는 진짜라고 다짐하면서.',
+    '그런데 왜 이렇게 지쳤을까.',
+    '힘은 많이 썼는데, 어디로 갈지는 정하지 못했던 것 같아.'
+  ],
+  manage: [
+    '계획을 세우고, 기록하고, 생각보다 많은 걸 해냈어.',
+    '그런데 가끔 이런 생각이 들어. 나는 이걸 왜 하고 있었지?',
+    '다음 1년은 \'왜\'에서부터 시작해 보고 싶어.'
+  ],
+  lead: [
+    '내가 고른 1년이었어. 비가 와도, 막혀도, 귀찮아도.',
+    '다 뜻대로 된 건 아니야. 그래도 의지로만 버티진 않았어. 버틸 필요가 없게 판을 짰거든.',
+    '다음 1년도, 내가 고를 거야.'
+  ]
+};
+const CLOSING = '이 1년은 아직 오지 않았다. 그러니, 다시 고를 수 있다.';
+
+/* ───────── 대본 ───────── */
+const N = (text, extra) => Object.assign({ t: 'narr', text }, extra || {});
+const J = (face, text) => ({ t: 'say', who: 'jiwoo', face, text });
+const F = (text, extra) => Object.assign({ t: 'say', who: 'future', text }, extra || {});
+const MSG = (from, text, kind) => ({ t: 'msg', from, text, kind: kind || 'unknown' });
+const MONTH = (big, sub, bg, scene) => ({ t: 'month', big, sub, bg, scene });
+const CHOICE = (id) => ({ t: 'choice', id });
+
+// 선택 직후 지우의 반응은 어떤 선택을 해도 같다(점수가 드러나지 않게).
+const SCRIPT = [
+  N('회사에서의 당신에게는 팀장이 있다.', { bg: 'prologue' }),
+  N('정해진 일정이 있고, 마감이 있고, 해야 할 일이 있다.'),
+  N('하지만 퇴근 후의 당신에게는, 아무도 없다.'),
+  N('이건 그 시간에 관한 이야기다.'),
+  N('1월 1일, 새해 첫날 밤.', { bg: 'jan' }),
+  J('smile', '새해 복 많이 받아! 올해는 우리 뭐든 같이 해 보자.'),
+  N('지우. 대학 동기이자 같은 동네 친구. 요즘 들어 연락이 부쩍 잦아졌다.'),
+  J('neutral', '아, 그리고 하나만.'),
+  J('smile', '나한테 잘 보이려고 애쓰지 마. 꾸민 너보다 솔직한 네가 훨씬 좋거든.'),
+  N('…심장이 조금 빨리 뛰었다.', { sprite: false }),
+  MSG('알 수 없는 번호', '올해 너의 선택 여덟 개를 지켜볼게.'),
+  N('…누구지?'),
+
+  MONTH('1월', '새해 결심 2주째, 화요일 저녁 7시', 'jan', 1),
+  J('tease', '너 새해부터 주 3회 운동한다며? 오늘 화요일인데~'),
+  N('결심한 지 2주째. 오늘따라 소파가 유난히 푹신하다.'),
+  J('smile', '고민하지 말고, 평소의 너대로 해.'),
+  CHOICE(1),
+  J('smile', '역시, 너답다.'),
+  N('그렇게 1월이 지나갔다.', { sprite: false }),
+
+  MONTH('3월', '기타를 배운 지 석 달', 'mar', 2),
+  N('작년 겨울, 큰맘 먹고 기타를 샀다.'),
+  N('그런데 몇 주째 같은 구간에서 손가락이 꼬인다.'),
+  J('neutral', '요즘 기타 소리가 안 들리던데? 그 곡은 다 쳤어?'),
+  CHOICE(2),
+  J('smile', '나중에 나한테도 한 곡 쳐 줘. 틀려도 괜찮으니까.'),
+  N('벚꽃이 피었다가, 졌다.', { sprite: false }),
+  MSG('알 수 없는 번호', '그 선택, 기억해 둘게.'),
+
+  MONTH('5월', '사흘 연속 빨간 날', 'may', 3),
+  N('달력에 빨간 날이 사흘 이어져 있다. 아직 아무 계획이 없다.'),
+  J('smile', '너 연휴에 뭐 해? 난 일단 늦잠부터 잘 거야.'),
+  J('tease', '…심심하면 연락해. 나 은근 한가하거든.'),
+  CHOICE(3),
+  N('연휴 마지막 날 밤, 지우에게서 노을 사진이 한 장 왔다.', { sprite: false }),
+
+  MONTH('6월', '한 달 걷기 챌린지 마지막 날', 'jun', 4),
+  N('포인트를 주는 \'한 달 걷기 챌린지\' 덕분에, 한 달 내내 매일 걸었다.'),
+  MSG('걷기 챌린지', '챌린지가 끝났어요. 그동안 수고하셨습니다!', 'sys'),
+  J('neutral', '그거 끝났지? 이제 안 걸어?'),
+  CHOICE(4),
+  J('tease', '나도 요즘 저녁마다 걷는데. …아니, 그냥 그렇다고.'),
+  N('여름이 가까워졌다.', { sprite: false }),
+  MSG('알 수 없는 번호', '벌써 반이 지났네.'),
+
+  MONTH('7월', '장마철 토요일, 아침 7시', 'jul', 5),
+  N('지우와 몇 주 전부터 잡아 둔 캠핑 날. 창밖엔 장대비가 쏟아진다.'),
+  MSG('캠핑장', '기상 악화로 오늘 예약이 취소되었습니다.', 'sys'),
+  J('worry', '아… 망했다. 오늘 뭐 하냐.'),
+  CHOICE(5),
+  J('smile', '다음엔 꼭 가자. 약속.'),
+  N('비는 저녁까지 그치지 않았다.', { sprite: false }),
+
+  MONTH('9월', '처음 가 본 클라이밍장', 'sep', 6),
+  N('지우가 요즘 빠져 있다는 클라이밍장에 처음 따라갔다.'),
+  N('다들 가볍게 오르는 초록색 코스. 나만 세 번째 홀드에서 계속 떨어진다.'),
+  J('smile', '괜찮아? 처음엔 다 그래~'),
+  CHOICE(6),
+  J('smile', '오늘 같이 와 줘서 좋았어.'),
+  N('손바닥에 남은 초크 자국이 며칠 갔다.', { sprite: false }),
+  MSG('알 수 없는 번호', '거의 다 왔어.'),
+
+  MONTH('10월', '독서 모임 1주년', 'oct', 7),
+  N('작년 가을, 지우와 함께 들어간 독서 모임이 1년을 맞았다.'),
+  N('처음엔 모임 날이 기다려졌는데, 요즘은 책을 숙제처럼 읽는다.'),
+  J('worry', '이번 달 책 다 읽었어? 난 반도 못 읽었어…'),
+  CHOICE(7),
+  J('tease', '솔직하게 말해 주는 거, 그게 너의 제일 좋은 점이야.'),
+  N('은행잎이 노랗게 물들었다.', { sprite: false }),
+
+  MONTH('12월', '새벽 1시', 'dec', 8),
+  N('자기 전 \'딱 10분만\' 보던 휴대폰이, 요즘은 매일 한 시간이 된다.'),
+  MSG('지우', '아직 안 자? ㅋㅋ 나도 ㅋㅋ', 'known'),
+  N('오늘도 벌써 새벽 1시다.'),
+  CHOICE(8),
+  MSG('지우', '잘 자. 내일 또 얘기하자.', 'known'),
+  N('그렇게, 1년이 끝났다.'),
+  MSG('알 수 없는 번호', '1월에 만나. 그때 알게 될 거야.'),
+
+  MONTH('다시, 1월', '1년 뒤', 'cafe', 'end'),
+  MSG('알 수 없는 번호', '오늘 저녁 7시. 동네 카페, 창가 자리.'),
+  N('혹시 지우일까. 괜히 거울을 한 번 더 보고 나왔다.'),
+  N('창가 자리에 낯익은 뒷모습이 앉아 있다.'),
+  N('그 사람이 천천히 돌아본다.'),
+  F('…왔구나.'),
+  N('지우가 아니었다. 그 얼굴은, 나였다.'),
+  F('지우를 공략하는 줄 알았지?'),
+  F('이 1년 동안 네가 공략한 건, 처음부터 너 자신이었어.', { reveal: true }),
+  F('1년 전, 네 앞에는 이런 내가 넷 있었어.', { quad: 'dark' }),
+  F('그리고 네 선택 여덟 개가… 나를 골랐지.', { quad: 'lit' }),
+  { t: 'ending' }
+];
+
+/* ───────── 그림 ───────── */
+function rng(seed) {
+  let s = seed % 2147483647;
+  if (s <= 0) s += 2147483646;
+  return () => (s = s * 16807 % 2147483647) / 2147483647;
+}
+
+function svgJiwoo(face, g) {
+  const male = g === 'M';
+  const skin = '#F2D2B6', hair = '#3B2B23', ink = '#2A1F1A', lip = '#8A4334';
+  const top = male ? '#4F7C6A' : '#E3A33F', collar = male ? '#E3EDE7' : '#F6E7C8', bw = male ? 3.8 : 3.2;
+  const eyeOpen = `<ellipse cx="82" cy="116" rx="4.6" ry="6" fill="${ink}"/><ellipse cx="118" cy="116" rx="4.6" ry="6" fill="${ink}"/><circle cx="83.6" cy="113.6" r="1.5" fill="#fff"/><circle cx="119.6" cy="113.6" r="1.5" fill="#fff"/>`;
+  const eyeHappy = `<path d="M76 117 q6 -8 12 0 M112 117 q6 -8 12 0" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round"/>`;
+  const browN = `<path d="M73 101 q9 -5 18 0 M109 101 q9 -5 18 0" fill="none" stroke="${hair}" stroke-width="${bw}" stroke-linecap="round"/>`;
+  const browW = `<path d="M73 104 q9 -3 18 -7 M109 97 q9 4 18 7" fill="none" stroke="${hair}" stroke-width="${bw}" stroke-linecap="round"/>`;
+  const browT = `<path d="M73 102 q9 -4 18 0 M109 98 q9 -7 18 -2" fill="none" stroke="${hair}" stroke-width="${bw}" stroke-linecap="round"/>`;
+  const mouth = {
+    smile: `<path d="M88 135 q12 13 24 0" fill="none" stroke="${lip}" stroke-width="3" stroke-linecap="round"/>`,
+    tease: `<path d="M90 138 q11 7 22 -4" fill="none" stroke="${lip}" stroke-width="3" stroke-linecap="round"/>`,
+    worry: `<path d="M90 142 q10 -8 20 0" fill="none" stroke="${lip}" stroke-width="3" stroke-linecap="round"/>`,
+    neutral: `<path d="M91 139 h18" fill="none" stroke="${lip}" stroke-width="3" stroke-linecap="round"/>`
+  };
+  const eyes = face === 'smile' ? eyeHappy : eyeOpen;
+  const brows = face === 'worry' ? browW : face === 'tease' ? browT : browN;
+  const backHair = male ? '' : `<path d="M42 116 C38 64 70 42 100 42 C130 42 162 64 158 116 C160 156 166 196 152 216 L48 216 C34 196 40 156 42 116 Z" fill="${hair}"/>`;
+  const strands = male ? '' : `<path d="M50 146 C46 176 50 202 66 224 C70 212 68 194 66 178 C64 164 64 154 65 146 Z" fill="${hair}"/><path d="M150 146 C154 176 150 202 134 224 C130 212 132 194 134 178 C136 164 136 154 135 146 Z" fill="${hair}"/>`;
+  const ears = male ? `<ellipse cx="55" cy="118" rx="7" ry="10" fill="${skin}"/><ellipse cx="145" cy="118" rx="7" ry="10" fill="${skin}"/>` : '';
+  const frontHair = male
+    ? `<path d="M53 110 C50 66 76 46 102 46 C130 46 152 66 149 106 C146 98 141 92 134 88 C124 94 106 96 88 90 C78 94 64 100 53 110 Z" fill="${hair}"/><rect x="55" y="102" width="6" height="16" rx="3" fill="${hair}"/><rect x="139" y="102" width="6" height="16" rx="3" fill="${hair}"/>`
+    : `<path d="M53 112 C53 70 79 54 104 56 C130 58 149 76 147 110 C138 94 123 84 105 86 C89 88 72 97 53 112 Z" fill="${hair}"/><rect x="118" y="74" width="17" height="5" rx="2.5" fill="#F6E7C8" transform="rotate(-22 126 76)"/>`;
+  return `<svg viewBox="0 0 200 262" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+${backHair}
+<rect x="${male ? 87 : 88}" y="152" width="${male ? 26 : 24}" height="34" rx="9" fill="${skin}"/>
+<path d="M28 262 C28 214 56 188 100 186 C144 188 172 214 172 262 Z" fill="${top}"/>
+<path d="M78 192 Q100 210 122 192" fill="none" stroke="${collar}" stroke-width="6" stroke-linecap="round"/>
+${strands}${ears}
+<ellipse cx="100" cy="112" rx="${male ? 44 : 45}" ry="50" fill="${skin}"/>
+${frontHair}
+<ellipse cx="73" cy="132" rx="7" ry="4" fill="#E88B7A" opacity="${male ? 0.22 : 0.35}"/><ellipse cx="127" cy="132" rx="7" ry="4" fill="#E88B7A" opacity="${male ? 0.22 : 0.35}"/>
+${brows}${eyes}${mouth[face] || mouth.neutral}
+</svg>`;
+}
+
+// 1년 뒤의 나 실루엣. c가 있으면 색을 직접 칠하고, 없으면 CSS 클래스로 칠한다(회상 화면용).
+function figShapes(prop, c) {
+  const cls = !c;
+  const fb = cls ? 'class="f-body"' : `fill="${c.body}" stroke="${c.rim}" stroke-width="2.5"`;
+  const fn = cls ? 'class="f-neck"' : `fill="${c.body}"`;
+  const fp = cls ? 'class="f-prop"' : `fill="${c.pf}"`;
+  const fps = cls ? 'class="f-prop-s"' : `fill="none" stroke="${c.pf}" stroke-width="7" stroke-linecap="round"`;
+  const fl = cls ? 'class="f-line"' : `fill="none" stroke="${c.pl}" stroke-width="3" stroke-linecap="round"`;
+  const fnd = cls ? 'class="f-needle"' : `fill="${c.pl}"`;
+  const back = prop === 'bag'
+    ? `<rect x="44" y="136" width="112" height="106" rx="24" ${fp}/><path d="M82 138 q18 -18 36 0" ${fps}/>`
+    : '';
+  const front = {
+    boat: `<g transform="translate(8 198)"><path d="M0 22 L52 22 L40 40 L12 40 Z" ${fp}/><path d="M24 20 L24 -10 L44 20 Z" ${fp}/></g>`,
+    bag: `<path d="M70 192 L66 252 M130 192 L134 252" ${fps}/>`,
+    note: `<g transform="rotate(-8 136 226)"><rect x="112" y="196" width="48" height="60" rx="5" ${fp}/><path d="M120 212 h32 M120 224 h32 M120 236 h24" ${fl}/></g>`,
+    compass: `<circle cx="100" cy="214" r="23" ${fp}/><path d="M100 195 L106 214 L100 233 L94 214 Z" ${fnd}/>`
+  }[prop] || '';
+  return `${back}<path d="M26 262 C26 204 58 178 100 176 C142 178 174 204 174 262 Z" ${fb}/><rect x="86" y="130" width="28" height="52" rx="10" ${fn}/><ellipse cx="100" cy="96" rx="40" ry="45" ${fb}/>${front}`;
+}
+
+let UID = 0;
+function svgFuture(prop, mode) {
+  const lit = mode === 'lit';
+  const c = lit
+    ? { body: '#2E2745', rim: '#F0A54C', pf: '#F0A54C', pl: '#2E2745' }
+    : { body: '#221E33', rim: 'rgba(176,160,250,.55)', pf: '#4A4466', pl: '#221E33' };
+  const gid = 'fg' + (++UID);
+  const glow = lit
+    ? `<defs><radialGradient id="${gid}"><stop offset="0" stop-color="#F0A54C" stop-opacity=".42"/><stop offset="1" stop-color="#F0A54C" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="140" r="124" fill="url(#${gid})"/>`
+    : '';
+  return `<svg viewBox="0 0 200 262" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${glow}${figShapes(prop, c)}</svg>`;
+}
+
+function svgLineup(my) {
+  let g = '';
+  LEVELS.forEach((lv, i) => {
+    const x = i * 90, top = 160 - i * 16, me = i === my;
+    g += `<g class="${me ? 'lu-me' : 'lu-other'}"><rect class="lu-step" x="${x + 3}" y="${top}" width="84" height="${210 - top}" rx="8"/><g transform="translate(${x + 5} ${top - 106}) scale(0.4)">${figShapes(lv.prop, null)}</g><text class="lu-name" x="${x + 45}" y="${top + 24}" text-anchor="middle">${lv.name}</text></g>`;
+  });
+  return `<svg viewBox="0 0 360 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="1년 뒤의 나 네 사람 가운데 ${LEVELS[my].name}">${g}</svg>`;
+}
+
+function bgSVG(key) {
+  const W = 390, H = 844;
+  const R = rng(key.split('').reduce((a, ch) => a + ch.charCodeAt(0) * 131, 7));
+  const lg = (id, a, b) => `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
+  const rg = (id, col, op) => `<radialGradient id="${id}"><stop offset="0" stop-color="${col}" stop-opacity="${op}"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></radialGradient>`;
+  const wrap = (defs, body) => `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>${defs}</defs>${body}</svg>`;
+  const dots = (n, x0, x1, y0, y1, rmin, rmax, fill, op) => {
+    let o = '';
+    for (let i = 0; i < n; i++) {
+      const x = x0 + R() * (x1 - x0), y = y0 + R() * (y1 - y0), r = rmin + R() * (rmax - rmin);
+      o += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${fill}" opacity="${op}"/>`;
+    }
+    return o;
+  };
+
+  switch (key) {
+    case 'prologue': {
+      let b = `<rect width="${W}" height="${H}" fill="url(#bp)"/><circle cx="298" cy="150" r="34" fill="#F1E6C8" opacity=".92"/>` + dots(36, 0, W, 0, 400, .8, 1.8, '#ffffff', .6);
+      [[0, 560, 64], [56, 470, 96], [146, 590, 58], [196, 430, 84], [272, 520, 66], [330, 470, 60]].forEach(([x, y, w]) => {
+        b += `<rect x="${x}" y="${y}" width="${w}" height="${H - y}" fill="#191E38"/>`;
+        for (let yy = y + 16; yy < H - 20; yy += 24) {
+          for (let xx = x + 9; xx < x + w - 10; xx += 16) {
+            b += `<rect x="${xx}" y="${yy}" width="7" height="11" fill="${R() < .26 ? '#F2C46A' : '#262C4C'}"/>`;
+          }
+        }
+      });
+      return wrap(lg('bp', '#121A36', '#2B2347'), b);
+    }
+    case 'jan': {
+      const b = `<rect width="${W}" height="${H}" fill="url(#bj)"/><rect x="58" y="120" width="274" height="300" fill="#1F2E60"/>`
+        + dots(46, 64, 326, 126, 414, 1.2, 3, '#ffffff', .78)
+        + `<rect x="58" y="120" width="274" height="300" fill="none" stroke="#9D93BD" stroke-width="7"/>
+<path d="M195 120 V420 M58 270 H332" stroke="#9D93BD" stroke-width="5"/>
+<rect y="640" width="${W}" height="${H - 640}" fill="#291F3E"/>
+<circle cx="332" cy="470" r="160" fill="url(#bjl)"/>
+<rect x="329" y="420" width="6" height="232" fill="#14182C"/>
+<path d="M304 420 L360 420 L347 384 L317 384 Z" fill="#E8B062"/>
+<rect x="26" y="556" width="300" height="122" rx="40" fill="#5D4469"/>
+<rect x="16" y="636" width="322" height="74" rx="28" fill="#6D5179"/>
+<rect x="56" y="586" width="96" height="62" rx="20" fill="#7E6189"/>
+<rect x="176" y="590" width="92" height="58" rx="20" fill="#765A82"/>`;
+      return wrap(lg('bj', '#1C2446', '#342E54') + rg('bjl', '#F2B866', .5), b);
+    }
+    case 'mar': {
+      let b = `<rect width="${W}" height="${H}" fill="url(#bm)"/>
+<rect x="34" y="122" width="244" height="276" fill="#FCE7E3" opacity=".55"/>
+<rect x="34" y="122" width="244" height="276" fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="6"/>
+<path d="M10 168 C90 190 160 168 296 232" fill="none" stroke="#7A5555" stroke-width="5" stroke-linecap="round"/>
+<path d="M120 180 C130 150 150 140 170 136 M210 196 C220 222 240 236 262 240" fill="none" stroke="#7A5555" stroke-width="3" stroke-linecap="round"/>`;
+      for (let i = 0; i < 24; i++) {
+        const x = 30 + R() * 250, y = 168 + (x - 10) * 0.2 + (R() - .5) * 40;
+        b += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(4 + R() * 4).toFixed(1)}" fill="#F6A9BB" opacity=".92"/>`;
+      }
+      b += `<rect y="652" width="${W}" height="${H - 652}" fill="#8778A5"/>
+<g transform="rotate(-12 300 620)">
+<rect x="294" y="396" width="12" height="190" fill="#4A2E22"/>
+<rect x="289" y="374" width="22" height="32" rx="5" fill="#3B2318"/>
+<circle cx="300" cy="582" r="36" fill="#7A4A33"/>
+<circle cx="300" cy="648" r="50" fill="#7A4A33"/>
+<circle cx="300" cy="616" r="13" fill="#3B2318"/>
+<path d="M297 400 V660 M303 400 V660" stroke="#E9D9C2" stroke-width="1" opacity=".7"/>
+</g>`;
+      return wrap(lg('bm', '#F0C3C0', '#9C8CC2'), b);
+    }
+    case 'may': {
+      let b = `<rect width="${W}" height="${H}" fill="url(#by)"/>
+<path d="M0 0 H120 L270 ${H} H150 Z" fill="#FFFFFF" opacity=".2"/>
+<path d="M160 0 H220 L340 ${H} H290 Z" fill="#FFFFFF" opacity=".14"/>
+<rect x="104" y="166" width="190" height="214" rx="10" fill="#000000" opacity=".06"/>
+<rect x="100" y="160" width="190" height="214" rx="10" fill="#FFFFFF"/>
+<rect x="100" y="160" width="190" height="46" rx="10" fill="#E05A47"/>
+<rect x="100" y="186" width="190" height="20" fill="#E05A47"/>
+<text x="195" y="192" text-anchor="middle" font-size="20" font-weight="700" fill="#FFFFFF" font-family="Gowun Batang, serif">5월</text>`;
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 7; c++) {
+          const red = r === 1 && c >= 2 && c <= 4;
+          b += `<rect x="${112 + c * 25}" y="${218 + r * 30}" width="19" height="22" rx="3" fill="${red ? '#E05A47' : '#EEF1F6'}"/>`;
+        }
+      }
+      b += `<rect y="690" width="${W}" height="${H - 690}" fill="#EAD9B7"/>`;
+      return wrap(lg('by', '#BFE1FF', '#FFF0CF'), b);
+    }
+    case 'jun': {
+      let b = `<rect width="${W}" height="${H}" fill="url(#bn)"/>
+<circle cx="300" cy="160" r="46" fill="#FFF3C6"/>
+<path d="M0 470 C80 430 160 462 220 440 C290 418 340 452 390 432 V${H} H0 Z" fill="#93C8AE"/>
+<path d="M150 ${H} C170 700 232 622 206 520 C192 470 212 444 202 424 L190 424 C198 444 178 472 188 520 C208 620 120 700 58 ${H} Z" fill="#EFE6CF"/>`;
+      [[58, 528, 38], [34, 620, 46], [96, 716, 42], [334, 534, 40], [356, 640, 48], [300, 742, 44]].forEach(([x, y, r]) => {
+        b += `<rect x="${x - 5}" y="${y}" width="10" height="${r + 20}" fill="#6B5A43"/><circle cx="${x}" cy="${y}" r="${r}" fill="#5E9B7F"/><circle cx="${(x - r * .3).toFixed(1)}" cy="${(y - r * .3).toFixed(1)}" r="${(r * .45).toFixed(1)}" fill="#74AF92"/>`;
+      });
+      return wrap(lg('bn', '#E1F4EB', '#A8D6C1'), b);
+    }
+    case 'jul': {
+      const cols = [];
+      for (let x = 46; x < 350; x += 15) cols.push(x + R() * 8);
+      let rain = '';
+      for (let y = 40; y < 540; y += 36) {
+        cols.forEach((x) => { rain += `<line x1="${x.toFixed(1)}" y1="${y}" x2="${(x - 5).toFixed(1)}" y2="${y + 20}"/>`; });
+      }
+      const b = `<rect width="${W}" height="${H}" fill="url(#bu)"/>
+<rect x="50" y="114" width="290" height="372" fill="#4A5A6B"/>
+<g clip-path="url(#buc)"><g class="rain" stroke="#D3DEE9" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round">${rain}</g></g>
+<rect x="50" y="114" width="290" height="372" fill="none" stroke="#8C99A9" stroke-width="8"/>
+<path d="M195 114 V486 M50 300 H340" stroke="#8C99A9" stroke-width="6"/>
+<rect y="660" width="${W}" height="${H - 660}" fill="#2D3640"/>
+<rect x="236" y="556" width="98" height="114" rx="26" fill="#C9793A"/>
+<path d="M244 584 Q285 548 326 584 V600 H244 Z" fill="#A9602B"/>
+<rect x="262" y="610" width="46" height="34" rx="8" fill="#B66B31"/>`;
+      return wrap(lg('bu', '#5A6878', '#38434E') + '<clipPath id="buc"><rect x="54" y="118" width="282" height="364"/></clipPath>', b);
+    }
+    case 'sep': {
+      let b = `<rect width="${W}" height="${H}" fill="url(#bs)"/>`;
+      for (let x = 78; x < W; x += 78) b += `<path d="M${x} 0 V722" stroke="#3C3228" stroke-opacity=".08" stroke-width="2"/>`;
+      for (let y = 120; y < 722; y += 120) b += `<path d="M0 ${y} H${W}" stroke="#3C3228" stroke-opacity=".08" stroke-width="2"/>`;
+      const pal = ['#E06A80', '#E7C34A', '#4D7BD0', '#8A63C9', '#E0874A'];
+      for (let i = 0; i < 30; i++) {
+        const x = 20 + R() * 350, y = 40 + R() * 660;
+        const rx = 9 + R() * 8, ry = 7 + R() * 5, rot = R() * 180;
+        if (Math.abs(x - 195) < 46) continue;
+        b += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${pal[i % pal.length]}"/>`;
+      }
+      [[200, 660], [176, 570], [214, 480], [182, 392], [210, 302], [186, 214], [204, 126]].forEach(([x, y], i) => {
+        b += `<ellipse cx="${x}" cy="${y}" rx="15" ry="11" transform="rotate(${i * 25} ${x} ${y})" fill="#46A874"/>`;
+      });
+      b += `<path d="M198 0 C200 240 206 480 204 722" fill="none" stroke="#EDE6DA" stroke-width="3" opacity=".75"/>
+<rect y="722" width="${W}" height="${H - 722}" fill="#394859"/>
+<path d="M130 722 V${H} M260 722 V${H}" stroke="#2C3846" stroke-width="3"/>`;
+      return wrap(lg('bs', '#DDD5C8', '#B9B0A2'), b);
+    }
+    case 'oct': {
+      let b = `<rect width="${W}" height="${H}" fill="url(#bo)"/>
+<rect x="24" y="118" width="180" height="250" fill="#FBE3B6" opacity=".55"/>
+<g clip-path="url(#boc)">
+<rect x="104" y="250" width="12" height="130" fill="#6B4A33"/>
+<circle cx="110" cy="240" r="58" fill="#E57D36"/><circle cx="76" cy="270" r="40" fill="#D95A2B"/><circle cx="150" cy="268" r="42" fill="#F0A33C"/>
+</g>
+<rect x="24" y="118" width="180" height="250" fill="none" stroke="#FFF4E0" stroke-opacity=".6" stroke-width="6"/>
+<rect x="214" y="140" width="164" height="540" fill="#5A3929"/>`;
+      const bp = ['#2F5D62', '#C94F3D', '#E1B04A', '#6A4C93', '#3D7A4A', '#D97E4A', '#F2E3C6'];
+      [260, 380, 500, 620].forEach((ys) => {
+        let x = 224;
+        while (x < 366) {
+          const w = 10 + R() * 9, h = 70 + R() * 26, col = bp[Math.floor(R() * bp.length)];
+          if (x + w > 368) break;
+          b += `<rect x="${x.toFixed(1)}" y="${(ys - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${col}"/>`;
+          x += w + 2;
+        }
+        b += `<rect x="214" y="${ys}" width="164" height="10" fill="#3F281D"/>`;
+      });
+      b += `<rect x="14" y="640" width="236" height="22" rx="4" fill="#6C432F"/>
+<rect x="34" y="662" width="12" height="${H - 662}" fill="#53321F"/><rect x="218" y="662" width="12" height="${H - 662}" fill="#53321F"/>
+<rect x="60" y="616" width="86" height="22" rx="3" fill="#2F5D62" transform="rotate(-6 103 627)"/>
+<rect x="190" y="602" width="30" height="38" rx="6" fill="#F3EADC"/><path d="M220 610 q12 2 0 20" fill="none" stroke="#F3EADC" stroke-width="5"/>`;
+      [[60, 420], [150, 470], [250, 110], [330, 760], [90, 760], [180, 400]].forEach(([x, y], i) => {
+        b += `<path d="M${x} ${y} q8 -10 16 0 q-8 10 -16 0 Z" fill="#E8892F" transform="rotate(${i * 40} ${x + 8} ${y})"/>`;
+      });
+      return wrap(lg('bo', '#F3C684', '#B9643F') + '<clipPath id="boc"><rect x="24" y="118" width="180" height="250"/></clipPath>', b);
+    }
+    case 'dec': {
+      const b = `<rect width="${W}" height="${H}" fill="url(#bd)"/><rect x="40" y="110" width="180" height="210" fill="#111938"/>`
+        + dots(14, 50, 210, 120, 310, .8, 1.6, '#ffffff', .7)
+        + `<circle cx="150" cy="182" r="26" fill="#ECE6CF"/><circle cx="161" cy="173" r="24" fill="#111938"/>
+<rect x="40" y="110" width="180" height="210" fill="none" stroke="#2C365E" stroke-width="6"/>
+<rect x="24" y="500" width="300" height="104" rx="14" fill="#1F2850"/>
+<rect x="318" y="560" width="64" height="110" rx="6" fill="#1A2246"/>
+<rect x="322" y="526" width="56" height="30" rx="6" fill="#10162F"/>
+<text x="350" y="547" text-anchor="middle" font-size="16" fill="#7FD3FF" font-family="ui-monospace, Menlo, Consolas, monospace">01:12</text>
+<rect x="14" y="590" width="304" height="96" rx="18" fill="#2B366A"/>
+<path d="M14 640 C120 610 220 652 318 622 V686 H14 Z" fill="#39467F"/>
+<rect x="40" y="552" width="120" height="48" rx="20" fill="#C6CDE6" opacity=".85"/>
+<circle cx="250" cy="606" r="132" fill="url(#bdg)"/>
+<rect x="237" y="590" width="26" height="44" rx="6" fill="#D8EBFF"/>`;
+      return wrap(lg('bd', '#0A0F21', '#1A2041') + rg('bdg', '#BFE0FF', .55), b);
+    }
+    case 'cafe': {
+      let b = `<rect width="${W}" height="${H}" fill="url(#bc)"/><rect x="22" y="104" width="346" height="410" rx="10" fill="#1D2A47"/>`
+        + dots(40, 30, 360, 112, 506, 1.2, 2.6, '#ffffff', .7)
+        + `<rect x="22" y="104" width="346" height="410" rx="10" fill="none" stroke="#2A1C14" stroke-width="10"/>
+<path d="M22 132 Q108 172 195 134 Q282 172 368 132" fill="none" stroke="#24170F" stroke-width="2"/>`;
+      for (let i = 1; i < 12; i++) {
+        const t = i / 12, x = 22 + t * 346;
+        const local = t < .5 ? t * 2 : (t - .5) * 2;
+        const y = 133 + Math.sin(local * Math.PI) * 18 + 6;
+        b += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="#FFD27A" opacity=".25"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" fill="#FFD27A"/>`;
+      }
+      b += `<circle cx="195" cy="580" r="280" fill="url(#bcw)"/>
+<rect x="28" y="650" width="334" height="24" rx="8" fill="#8B5A39"/>
+<rect x="70" y="674" width="14" height="${H - 674}" fill="#5E3C27"/><rect x="306" y="674" width="14" height="${H - 674}" fill="#5E3C27"/>`;
+      [110, 236].forEach((x) => {
+        b += `<ellipse cx="${x + 22}" cy="646" rx="36" ry="7" fill="#E6DCCD"/><rect x="${x}" y="604" width="44" height="40" rx="8" fill="#F4ECE0"/><path d="M${x + 44} 612 q14 3 0 22" fill="none" stroke="#F4ECE0" stroke-width="5"/><path d="M${x + 14} 594 q-6 -10 0 -20 M${x + 28} 594 q6 -10 0 -20" fill="none" stroke="#F4ECE0" stroke-width="2.5" opacity=".5"/>`;
+      });
+      return wrap(lg('bc', '#3A2921', '#6B4834') + rg('bcw', '#FFC978', .35), b);
+    }
+    default:
+      return bgSVG('prologue');
+  }
+}
+
+/* ───────── 진행 ───────── */
+const $ = (id) => document.getElementById(id);
+const REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const KEY = 'eoneu-1nyeon-v2';
+let state = { i: 0, choices: {}, done: false, g: null };
+let typing = false, typeTimer = null, fullText = '', curBg = null, lastStepAt = 0;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+function fresh(g) { return { i: 0, choices: {}, done: false, g: g || null }; }
+// 주인공이 남자면 지우는 여자(F), 여자면 남자(M)
+function comp() { return state.g === 'f' ? 'M' : 'F'; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 저장할 수 없는 환경이면 건너뜀 */ } }
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || typeof s.i !== 'number' || s.i < 0 || s.i >= SCRIPT.length || typeof s.choices !== 'object' || s.choices === null) return null;
+    return { i: Math.floor(s.i), choices: s.choices, done: !!s.done, g: (s.g === 'm' || s.g === 'f') ? s.g : 'm' };
+  } catch (e) { return null; }
+}
+function clearSave() { try { localStorage.removeItem(KEY); } catch (e) { /* 건너뜀 */ } }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('on', s.id === id));
+}
+
+function openModal(title, body, buttons) {
+  $('mTitle').textContent = title;
+  $('mBody').textContent = body;
+  const box = $('mBtns');
+  box.innerHTML = '';
+  buttons.forEach((b) => {
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'btn' + (b.ghost ? ' ghost' : '');
+    el.textContent = b.label;
+    el.addEventListener('click', (e) => { e.stopPropagation(); closeModal(); if (b.onClick) b.onClick(); });
+    box.appendChild(el);
+  });
+  $('modal').classList.add('on');
+  const last = box.lastElementChild;
+  if (last) setTimeout(() => last.focus(), 30);
+}
+function closeModal() { $('modal').classList.remove('on'); }
+function modalOpen() { return $('modal').classList.contains('on'); }
+
+function buildRing() {
+  const svg = $('ring'), cx = 120, cy = 120, r = 88, marked = [1, 3, 5, 6, 7, 9, 10, 12];
+  let h = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="currentColor" stroke-opacity=".14"/>`;
+  for (let m = 1; m <= 12; m++) {
+    const a = (m / 12) * Math.PI * 2 - Math.PI / 2;
+    const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+    const lx = cx + (r + 19) * Math.cos(a), ly = cy + (r + 19) * Math.sin(a) + 3.5;
+    h += marked.includes(m)
+      ? `<circle class="s" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8"/>`
+      : `<circle class="m" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4"/>`;
+    h += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle">${m}</text>`;
+  }
+  svg.innerHTML = h;
+  const dots = Array.from(svg.querySelectorAll('.s'));
+  if (REDUCED) { dots.forEach((d) => d.classList.add('lit')); return; }
+  dots.forEach((d, k) => setTimeout(() => d.classList.add('lit'), 400 + k * 170));
+}
+
+function buildWho() {
+  document.querySelectorAll('.pickc').forEach((b) => {
+    b.addEventListener('click', () => {
+      state = fresh(b.dataset.g);
+      $('portrait').innerHTML = svgJiwoo('smile', comp());
+      showScreen('meet');
+    });
+  });
+  $('btnBegin').addEventListener('click', startPlay);
+}
+
+function bgAt(i) { for (let k = i; k >= 0; k--) if (SCRIPT[k].bg) return SCRIPT[k].bg; return 'prologue'; }
+function spriteAt(i) {
+  for (let k = i; k >= 0; k--) {
+    const s = SCRIPT[k];
+    if (s.t === 'say') return { kind: s.who, face: s.face };
+    if (s.t === 'month' || s.sprite === false) return null;
+  }
+  return null;
+}
+function chipAt(i) {
+  for (let k = i; k >= 0; k--) {
+    const s = SCRIPT[k];
+    if (s.t === 'month') return s.scene === 'end' ? '1년 뒤' : s.big;
+  }
+  return '프롤로그';
+}
+
+function revealedAt(i) { for (let k = i; k >= 0; k--) if (SCRIPT[k].reveal) return true; return false; }
+function setTarget() {
+  const rev = revealedAt(state.i);
+  $('tname').textContent = rev ? '나' : '지우';
+  $('theart').textContent = rev ? '♥' : '♥ ???';
+  $('tchip').classList.toggle('flip', rev);
+}
+function setQuad(mode) {
+  const q = $('quad');
+  if (!mode) { q.classList.remove('on'); return; }
+  const r = computeResult();
+  $('qgrid').innerHTML = LEVELS.map((lv, idx) => {
+    const me = mode === 'lit' && idx === r.lv;
+    return `<div class="qcell${me ? ' me' : ''}">${svgFuture(lv.prop, me ? 'lit' : 'dark')}<span>???</span></div>`;
+  }).join('');
+  $('qcap').textContent = mode === 'lit' ? '네 선택이 고른 1년 뒤의 나' : '가능했던 1년 뒤의 나';
+  q.classList.toggle('lit', mode === 'lit');
+  q.classList.add('on');
+}
+
+function setBg(key) {
+  if (key === curBg) return;
+  curBg = key;
+  const el = $('bg');
+  if (REDUCED || !el.innerHTML) { el.innerHTML = bgSVG(key); el.classList.remove('fade'); return; }
+  el.classList.add('fade');
+  setTimeout(() => { if (curBg === key) el.innerHTML = bgSVG(key); el.classList.remove('fade'); }, 280);
+}
+function setSprite(sp) {
+  const el = $('sprite');
+  if (!sp) { el.classList.remove('on'); return; }
+  const lv = sp.kind === 'future' ? currentLevel() : null;
+  const k = sp.kind === 'future' ? 'future-' + lv.prop : 'jiwoo-' + comp() + '-' + (sp.face || 'neutral');
+  if (el.dataset.k !== k) {
+    el.innerHTML = sp.kind === 'future' ? svgFuture(lv.prop, 'lit') : svgJiwoo(sp.face || 'neutral', comp());
+    el.dataset.k = k;
+  }
+  el.classList.add('on');
+}
+function setChip() {
+  $('chipText').textContent = chipAt(state.i);
+  const done = SCENES.filter((sc) => typeof state.choices[sc.id] === 'number').length;
+  $('pips').innerHTML = SCENES.map((_, k) => `<i class="${k < done ? 'done' : ''}"></i>`).join('');
+}
+function setName(who) {
+  const el = $('name');
+  if (!who) { el.className = ''; el.textContent = ''; return; }
+  el.textContent = who === 'future' ? '1년 뒤의 나' : '지우';
+  el.className = 'on' + (who === 'future' ? ' future' : '');
+}
+function typeText(str, narr) {
+  clearTimeout(typeTimer);
+  const el = $('text');
+  el.classList.toggle('narr', !!narr);
+  fullText = str;
+  $('srText').textContent = str;
+  $('next').classList.remove('on');
+  if (REDUCED) { el.textContent = str; typing = false; $('next').classList.add('on'); return; }
+  typing = true;
+  let n = 0;
+  el.textContent = '';
+  const tick = () => {
+    n += 1;
+    el.textContent = str.slice(0, n);
+    if (n >= str.length) { typing = false; $('next').classList.add('on'); return; }
+    typeTimer = setTimeout(tick, 28);
+  };
+  tick();
+}
+function finishTyping() {
+  clearTimeout(typeTimer);
+  $('text').textContent = fullText;
+  typing = false;
+  $('next').classList.add('on');
+}
+function showMsg(s) {
+  const av = $('msgAv');
+  av.className = 'av' + (s.kind === 'known' ? ' known' : s.kind === 'sys' ? ' sys' : '');
+  av.textContent = s.kind === 'known' ? '지' : s.kind === 'sys' ? '!' : '?';
+  $('msgFrom').textContent = s.from;
+  $('msgBody').textContent = s.text;
+  $('msg').classList.add('on');
+}
+function showMonth(s) {
+  $('mcBig').textContent = s.big;
+  $('mcSub').textContent = s.sub;
+  $('monthcard').classList.add('on');
+  $('srText').textContent = s.big + ', ' + s.sub;
+}
+function showChoices(id) {
+  const sc = SCENES.find((x) => x.id === id);
+  const box = $('choices');
+  box.innerHTML = '';
+  const q = document.createElement('p');
+  q.className = 'q';
+  q.textContent = '평소의 나라면?';
+  box.appendChild(q);
+  sc.opts.forEach((o, idx) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'choice';
+    b.textContent = o[0];
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!box.classList.contains('on')) return;
+      state.choices[id] = idx;
+      box.classList.remove('on');
+      next();
+    });
+    box.appendChild(b);
+  });
+  box.classList.add('on');
+  $('next').classList.remove('on');
+  $('srText').textContent = '평소의 나라면? 네 가지 중에서 하나를 골라 주세요.';
+}
+
+function run() {
+  const s = SCRIPT[state.i];
+  if (!s) return;
+  lastStepAt = Date.now();
+  setBg(bgAt(state.i));
+  setChip();
+  setTarget();
+  if (s.t !== 'msg') $('msg').classList.remove('on');
+  if (s.t !== 'month') $('monthcard').classList.remove('on');
+  if (s.t !== 'choice') $('choices').classList.remove('on');
+  setQuad(s.quad);
+  setSprite(s.quad ? null : spriteAt(state.i));
+  if (s.t === 'narr') { setName(null); typeText(s.text, true); }
+  else if (s.t === 'say') { setName(s.who); typeText(s.text, false); }
+  else if (s.t === 'msg') { setName(null); showMsg(s); typeText('띠링.', true); }
+  else if (s.t === 'month') {
+    setName(null); clearTimeout(typeTimer); typing = false;
+    $('text').textContent = ''; $('next').classList.remove('on');
+    showMonth(s);
+  }
+  else if (s.t === 'choice') { showChoices(s.id); }
+  else if (s.t === 'ending') { finish(); }
+}
+function next() {
+  if (state.i < SCRIPT.length - 1) { state.i += 1; save(); run(); }
+}
+function advance() {
+  if (!$('play').classList.contains('on') || modalOpen()) return;
+  const s = SCRIPT[state.i];
+  if (!s || s.t === 'choice' || s.t === 'ending') return;
+  if (typing) { finishTyping(); return; }
+  if (Date.now() - lastStepAt < 250) return;
+  next();
+}
+
+/* ───────── 결과 ───────── */
+function computeResult() {
+  const dim = { lead: 0, mind: 0, motive: 0, exec: 0 };
+  let total = 0;
+  const picks = SCENES.map((sc) => {
+    const idx = state.choices[sc.id];
+    const o = (typeof idx === 'number' && sc.opts[idx]) ? sc.opts[idx] : null;
+    const pt = o ? o[1] : 0;
+    dim[sc.dim] += pt;
+    total += pt;
+    return { sc, text: o ? o[0] : '선택하지 않았어요', pt };
+  });
+  const lv = total <= 13 ? 0 : total <= 19 ? 1 : total <= 25 ? 2 : 3;
+  return { dim, total, picks, lv, level: LEVELS[lv] };
+}
+function currentLevel() { return computeResult().level; }
+
+function finish() {
+  state.done = true;
+  save();
+  renderEnding();
+  showScreen('ending');
+}
+function renderEnding() {
+  const r = computeResult();
+  const lines = ENDINGS[r.level.key];
+  const base = 0.7, step = 0.9;
+  $('ending').innerHTML = `<div class="art">${svgFuture(r.level.prop, 'lit')}</div>
+<p class="who">당신이 만난 1년 뒤의 나</p>
+<h2 class="e-name">${esc(r.level.name)}</h2>
+<div class="lines">${lines.map((l, k) => `<p style="animation-delay:${(base + k * step).toFixed(2)}s">${esc(l)}</p>`).join('')}</div>
+<p class="closing" style="animation-delay:${(base + lines.length * step + 0.4).toFixed(2)}s">${esc(CLOSING)}</p>
+<div class="emsg" style="animation-delay:${(base + lines.length * step + 1.4).toFixed(2)}s"><div class="av">지</div><div><div class="from">지우</div><div class="body">새해 복 많이 받아. 올해도 솔직한 너로 지내 줘.</div></div></div>
+<button class="btn" id="btnRecall" type="button" style="animation-delay:${(base + lines.length * step + 2.2).toFixed(2)}s">회상 보기</button>`;
+  $('btnRecall').addEventListener('click', () => { renderResult(); showScreen('result'); $('result').scrollTop = 0; });
+}
+function renderResult() {
+  const r = computeResult();
+  const dims = DIM_ORDER.map((dk) => {
+    const d = DIMS[dk], score = r.dim[dk];
+    const rows = r.picks.filter((p) => p.sc.dim === dk).map((p) => `<div class="scene"><div class="mbadge">${esc(p.sc.month)}</div><div><p class="scene-title">${esc(p.sc.title)}</p><p class="scene-pick">${esc(p.text)}</p><p class="scene-pt"><b>${p.pt}점</b> ${p.pt ? esc(LEVELS[p.pt - 1].name) : ''}</p></div></div>`).join('');
+    const pips = Array.from({ length: 8 }, (_, k) => `<i class="${k < score ? 'on' : ''}"></i>`).join('');
+    return `<div class="dim"><div class="dim-head"><div><span class="dim-name">${d.name}</span><span class="dim-ses">${d.ses}</span></div><div class="dim-score">${score}<small> / 8</small></div></div><div class="dpips" aria-hidden="true">${pips}</div>${rows}</div>`;
+  }).join('');
+  $('result').innerHTML = `<p class="r-small">당신이 만난 1년 뒤의 나</p>
+<h1 class="r-name">${esc(r.level.name)}</h1>
+<p class="r-mean">${esc(r.level.mean)}</p>
+<p class="r-total">32점 중 <b>${r.total}점</b></p>
+<div class="lineup">${svgLineup(r.lv)}</div>
+<p class="capnote">네 사람은 모두 1년 뒤의 당신이었어요. 점수가 높을수록 오른쪽 사람에 가까워집니다.</p>
+<p class="save-hint">강의 중에 이 화면을 다시 봅니다. 지금 캡처해 두세요.</p>
+<h2 class="sec">영역별로 보면</h2>
+${dims}
+<p class="disclaimer">이 결과는 평가가 아니라 오늘 강의의 출발점입니다. 교육용 자기성찰 도구이며, 검증된 심리검사가 아닙니다.</p>
+<div class="r-actions"><button class="btn ghost" id="btnReEnd" type="button">엔딩 다시 보기</button><button class="btn ghost" id="btnRestart" type="button">처음부터 다시</button></div>`;
+  $('btnReEnd').addEventListener('click', () => { renderEnding(); showScreen('ending'); });
+  $('btnRestart').addEventListener('click', confirmRestart);
+}
+function confirmRestart() {
+  openModal('처음부터 다시 할까요?', '지금까지의 선택과 결과가 지워집니다.', [
+    { label: '취소', ghost: true },
+    { label: '다시 하기', onClick: () => { clearSave(); state = fresh(); showScreen('title'); } }
+  ]);
+}
+
+function startPlay() {
+  state = fresh(state.g || 'm');
+  save();
+  curBg = null;
+  $('sprite').dataset.k = '';
+  showScreen('play');
+  run();
+}
+function resumePlay(saved) {
+  state = saved;
+  curBg = null;
+  $('sprite').dataset.k = '';
+  showScreen('play');
+  run();
+}
+
+function boot() {
+  buildRing();
+  buildWho();
+  $('btnStart').addEventListener('click', () => showScreen('who'));
+  $('play').addEventListener('click', (e) => {
+    if (e.target.closest && e.target.closest('#choices')) return;
+    advance();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!$('play').classList.contains('on') || modalOpen()) return;
+    if (e.key !== ' ' && e.key !== 'Enter') return;
+    const ae = document.activeElement;
+    if (ae && ae.classList && ae.classList.contains('choice')) return;
+    e.preventDefault();
+    advance();
+  });
+  showScreen('title');
+  const saved = load();
+  if (!saved) return;
+  if (saved.done) {
+    state = saved;
+    openModal('이미 1년을 마쳤어요', '회상 화면에서 내 선택과 점수를 다시 볼 수 있어요.', [
+      { label: '처음부터 다시', ghost: true, onClick: () => { clearSave(); state = fresh(); } },
+      { label: '회상 보기', onClick: () => { renderResult(); showScreen('result'); } }
+    ]);
+  } else if (saved.i > 0) {
+    openModal('이어서 할까요?', `지난번에 ${chipAt(saved.i)}까지 진행했어요.`, [
+      { label: '처음부터', ghost: true, onClick: () => { clearSave(); state = fresh(); } },
+      { label: '이어하기', onClick: () => resumePlay(saved) }
+    ]);
+  }
+}
+boot();
+</script>
+</body>
+</html>
